@@ -10,15 +10,11 @@ function EnergySphere(props) {
     
     const [energyPointsArr, setEnergyPointsArr] = useState([]);
     const [energyLinesArr, setEnergyLinesArr] = useState([]);
-    const [ranOnce, setRanOnce] = useState(false);
     console.log(energyPointsArr.length);
     
     useEffect(() => {
-        if(!ranOnce){
-            setRanOnce(true);
-            const newPoints = createEnergyPoints(15);
-            setEnergyPointsArr([...newPoints]);
-        }
+        const newPoints = createEnergyPoints(15);
+        setEnergyPointsArr([...newPoints]);
     }, []);
 
     useEffect(() => {
