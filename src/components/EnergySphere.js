@@ -3,12 +3,16 @@ import { useEffect, useState } from "react";
 
 function EnergySphere(props) {
 
-    const {sizePx, energyRange} = props;
+    const {heightPer, widthPer, energyRange} = props;
 
+    const width = document.documentElement.clientWidth * (widthPer / 100);
+    const height = document.documentElement.clientHeight * (heightPer / 100);
+    
     const [energyPointsArr, setEnergyPointsArr] = useState([]);
     const [energyLinesArr, setEnergyLinesArr] = useState([]);
     const [ranOnce, setRanOnce] = useState(false);
-
+    console.log(energyPointsArr.length);
+    
     useEffect(() => {
         if(!ranOnce){
             setRanOnce(true);
@@ -41,11 +45,11 @@ function EnergySphere(props) {
                 posXPercent = Math.random();
             }
     
-            posX = Math.round(posXPercent * sizePx);
-            posY = Math.round(posYPercent * sizePx);
+            posX = Math.round(posXPercent * width);
+            posY = Math.round(posYPercent * height);
     
-            directionX = (sizePx / 2) - posX;
-            directionY = ((sizePx / 2) - posY);
+            directionX = (width / 2) - posX;
+            directionY = ((height / 2) - posY);
     
             const directionVector = calcModuleVector(directionX, directionY);
     
@@ -70,7 +74,7 @@ function EnergySphere(props) {
             point.posX += point.directionX * point.speed; 
             point.posY += point.directionY * point.speed;
 
-            if(point.posX > sizePx || point.posX < 0 || point.posY > sizePx || point.posY < 0) {
+            if(point.posX > width || point.posX < 0 || point.posY > height || point.posY < 0) {
                 expiredPointsCounter++;
             } else {
                 updatedPoints.push(point);
@@ -136,7 +140,7 @@ function EnergySphere(props) {
             const opacityPerc = Math.round((energyRange - distance) / energyRange * 100) / 100;
 
             return(
-                <svg key={index} height={sizePx} width={sizePx} className="absolute">
+                <svg key={index} height={height} width={width} className="absolute">
                     <line x1={`${line[0].posX}`} y1={`${line[0].posY}`} x2={`${line[1].posX}`} y2={`${line[1].posY}`} style={{stroke:"rgb(255,255,255)", strokeWidth:"1", opacity:`${opacityPerc}`}} />
                 </svg>
             );
@@ -153,7 +157,7 @@ function EnergySphere(props) {
     }
 
     return(
-        <div id="energy-sphere" style={{width: `${sizePx}px`}} className={`relative overflow-hidden bg-slate-950 aspect-[1/1]`}>
+        <div id="energy-sphere" style={{width: `${width}px`, height: `${height}px`}} className={`relative overflow-hidden bg-slate-950 aspect-[1/1]`}>
             {energyPointsArr.length !== 0 && renderPoints()}
             {energyLinesArr.length !== 0 && renderLines()}
         </div>
